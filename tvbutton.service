@@ -1,0 +1,13 @@
+[Unit]
+Description=TV Button Handler Service
+Requires=tvplayer.service
+After=tvplayer.service network.target
+
+[Service]
+WorkingDirectory=/home/homer/tv/
+ExecStart=/home/homer/tv/button_handler
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

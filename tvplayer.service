@@ -1,0 +1,12 @@
+[Unit]
+Description=TV Video Player Service
+After=network.target
+
+[Service]
+WorkingDirectory=/home/homer/tv/
+ExecStart=/home/homer/tv/video_player
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
