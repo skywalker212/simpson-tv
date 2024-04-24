@@ -1,21 +1,32 @@
 CC = gcc
 CFLAGS = -Wall -g
-LDFLAGS = -lwiringPi
+INSTALL_PATH = /usr/local/bin
 
-# Define the source files and target binaries
-VIDEO_PLAYER_SRC = video_player.c
-VIDEO_PLAYER_BIN = video_player
+# Define source files and target binaries
+SOURCES = video_player.c button_handler.c swipe_tty.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGETS = $(SOURCES:.c=)
 
-BUTTON_HANDLER_SRC = button_handler.c
-BUTTON_HANDLER_BIN = button_handler
+all: $(TARGETS)
 
-all: $(VIDEO_PLAYER_BIN) $(BUTTON_HANDLER_BIN)
+video_player: video_player.o
+	$(CC) $(CFLAGS) -o $@ $^
 
-$(VIDEO_PLAYER_BIN): $(VIDEO_PLAYER_SRC)
-	$(CC) $(CFLAGS) $(VIDEO_PLAYER_SRC) -o $(VIDEO_PLAYER_BIN)
+button_handler: button_handler.o
+	$(CC) $(CFLAGS) -o $@ $^ -lwiringPi
 
-$(BUTTON_HANDLER_BIN): $(BUTTON_HANDLER_SRC)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(BUTTON_HANDLER_SRC) -o $(BUTTON_HANDLER_BIN)
+swipe_tty: swipe_tty.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+install:
+	@echo "Installing executables to $(INSTALL_PATH)"
+	@$(foreach exec,$(TARGETS),cp $(exec) $(INSTALL_PATH)/$(exec);)
+	@echo "Installation complete."
 
 clean:
-	rm -f $(VIDEO_PLAYER_BIN) $(BUTTON_HANDLER_BIN)
+	rm -f $(TARGETS) $(OBJECTS)
+
+.PHONY: all install clean

@@ -1,0 +1,14 @@
+[Unit]
+Description=Swipe Gesture Service for Touchscreen
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/home/homer/simpson-tv/swipe_tty
+WorkingDirectory=/home/homer
+Restart=on-failure
+RestartSec=5
+User=homer
+
+[Install]
+WantedBy=multi-user.target

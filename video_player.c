@@ -112,7 +112,7 @@ int main() {
     }
     fprintf(fp, "%d", getpid());
     fclose(fp);
-    const char *directory = "/path/to/your/videos";
+    const char *directory = "/home/homer/simpson-tv/videos";
     getVideos(directory);
     playVideos();
     return 0;
