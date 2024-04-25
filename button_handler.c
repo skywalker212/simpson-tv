@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include<signal.h>
 
 #define BUTTON_PIN 26 // according to wiringPi setup
 #define SCREEN_PIN 18    // GPIO pin for the screen power
@@ -37,7 +38,7 @@ void triplePressAction() {
 void longPressAction() {
     if (SCREEN_ON) turnOffScreen();
     else turnOnScreen();
-    SCREEN_ON != SCREEN_ON;
+    SCREEN_ON = !SCREEN_ON;
 }
 
 // Helper function to get current time in milliseconds
@@ -96,13 +97,13 @@ int main(void) {
 
     // Setting up the interrupt for button press
     if (wiringPiISR(BUTTON_PIN, INT_EDGE_FALLING, &buttonPressInterrupt) < 0) {
-        fprintf(stderr, "Unable to setup ISR for falling edge: %s\n", strerror(errno));
+        fprintf(stderr, "Unable to setup ISR for falling edge");
         return 1;
     }
 
     // Setting up the interrupt for button release
     if (wiringPiISR(BUTTON_PIN, INT_EDGE_RISING, &buttonReleaseInterrupt) < 0) {
-        fprintf(stderr, "Unable to setup ISR for rising edge: %s\n", strerror(errno));
+        fprintf(stderr, "Unable to setup ISR for rising edge");
         return 1;
     }
 
